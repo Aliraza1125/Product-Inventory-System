@@ -1,0 +1,116 @@
+/* Add your CSS styles here */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .image-container {
+    flex: 1;
+  }
+  
+  .image-container img {
+    width: 75%;
+    height: auto;
+  }
+  
+  .form-container {
+    flex: 1;
+    margin-right: 100px;
+    max-width: 400px;
+  }
+  
+  .logo {
+    display: block;
+    margin: 0 auto;
+    width: 15%;
+    height: 15%;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .subtitle {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+ 
+  
+  .form {
+    margin-top: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .checkbox-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox-group input {
+    margin-right: 10px;
+  }
+  
+  .checkbox-group label {
+    margin-right: 10px;
+  }
+  
+  .forgot-password {
+    flex-grow: 1;
+    text-align: right;
+  }
+  
+  .button-group button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6366f1; /* Indigo color */
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button-group button:hover {
+    background-color: #4338ca; /* Darker indigo color */
+  }
+  
+  .register-link {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .register-link a {
+    font-weight: bold;
+    color: #6366f1; /* Indigo color */
+    text-decoration: none;
+  }
+  
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+  

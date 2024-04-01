@@ -1,0 +1,111 @@
+/* Add your CSS styles here */
+
+.container {
+    display: flex;
+   justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .form-container {
+  
+    padding: 20px 100px;
+    max-width: 400px;
+  }
+  
+  .logo {
+    display: block;
+    margin: 0 auto;
+    width: 10%;
+    height: 10%;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .input-group {
+ 
+    margin-bottom: 15px;
+  }
+  .fullname{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .checkbox-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox-group input {
+    margin-right: 10px;
+  }
+  
+  .checkbox-group label {
+    margin-right: 10px;
+  }
+  
+  .forgot-password {
+    flex-grow: 1;
+    text-align: right;
+  }
+  
+  .button-group button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6366f1; /* Indigo color */
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button-group button:hover {
+    background-color: #4338ca; /* Darker indigo color */
+  }
+  
+  .register-link {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .register-link a {
+    font-weight: bold;
+    color: #6366f1; /* Indigo color */
+    text-decoration: none;
+  }
+  
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+  
+  .image-container {
+margin-right: 30px;
+
+  }
+  
+  .image-container img {
+width:  550px;
+height: 550px;
+
+
+ 
+
+  }
+  

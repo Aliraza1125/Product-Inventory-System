@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="Register.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <div>
+        <img class="logo" src="./assets/logo.png" alt="Your Company">
+        <h2 class="title">Register your account</h2>
+      </div>
+      <form id="registerForm" class="form">
+        <div class="input-group fullname">
+            <div >
+
+                <input id="firstName" name="firstName" type="text" required placeholder="First Name">
+            </div>
+            <div>
+
+                <input id="lastName" name="lastName" type="text" required placeholder="Last Name">
+            </div>
+        </div>
+        <div class="input-group">
+            <div style="margin-bottom: 20px;">
+                <input id="email-address" name="email" type="email" required placeholder="Email address">
+            </div>
+            <div>
+
+                <input id="password" name="password" type="password" required placeholder="Password">
+            </div>
+        </div>
+        <div class="input-group">
+          <input id="phoneNumber" name="phoneNumber" type="number" required placeholder="Phone Number">
+        </div>
+        <div class="checkbox-group">
+          <input id="terms-checkbox" type="checkbox" >
+          <label for="terms-checkbox">I Agree Terms & Conditions</label>
+          <span class="forgot-password">Forgot your password?</span>
+        </div>
+        <div class="button-group">
+          <button type="submit">Sign up</button>
+          <p class="register-link">Or <span class="highlight">Already Have an Account, Please <a href="/SignIn.html">Signin now</a></span></p>
+        </div>
+      </form>
+    </div>
+    <div class="image-container">
+      <img src="./assets/Login.png" alt="">
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+
+  <script src="Register.js"></script>
+
+</body>
+</html>
