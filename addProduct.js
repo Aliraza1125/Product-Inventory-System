@@ -55,6 +55,7 @@ function addProductToTable(productDetails) {
       </td>
     `;
     tbody.appendChild(row);
+
   });
 }
 
@@ -92,8 +93,11 @@ function populateTableFromStorage() {
       </td>
     `;
     tbody.appendChild(row);
+   
   });
 }
+
+
 
 document.getElementById("addProduct").addEventListener("click", displayModal);
 
