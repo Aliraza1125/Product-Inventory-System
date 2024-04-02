@@ -35,6 +35,7 @@ function addProductToTable(productDetails) {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td class="fixed"><input type="checkbox"></td>
+    
       <td>${product.id}</td>
       <td>${product.productName}</td>
       <td>${product.productTitle}</td>

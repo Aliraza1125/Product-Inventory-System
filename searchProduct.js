@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
   const searchInput = document.getElementById("searchInput");
+  const filterInputs = document.querySelectorAll("#filterRow input[type='text']");
   const table = document.querySelector(".data-table");
 
   searchInput.addEventListener("input", function() {
@@ -7,11 +8,17 @@ document.addEventListener("DOMContentLoaded", function() {
     filterProducts(searchTerm);
   });
 
-  function filterProducts(searchTerm) {
+  filterInputs.forEach(input => {
+    input.addEventListener("input", function() {
+      filterProducts(input.value.trim().toLowerCase(), input.parentElement.cellIndex);
+    });
+  });
+
+  function filterProducts(searchTerm, columnIndex) {
     const dataRows = table.querySelectorAll("tbody tr");
     dataRows.forEach(row => {
-      const productName = row.querySelector("td:nth-child(3)").textContent.toLowerCase(); 
-      if (productName.includes(searchTerm)) {
+      const cellValue = row.querySelectorAll("td")[columnIndex].textContent.toLowerCase();
+      if (cellValue.includes(searchTerm)) {
         row.style.display = "table-row";
       } else {
         row.style.display = "none";

@@ -229,7 +229,55 @@
     background-color: #4CAF50;
     color: #fff;
   }
+/* Style for select-columns container */
+.select-columns {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
 
+/* Style for label */
+.select-columns label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+  color: #333;
+}
+
+/* Style for select dropdown */
+.select-columns select {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #f8f8f8;
+  color: #333;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select-columns select:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+/* Style for dropdown options */
+.select-columns select option {
+  font-size: 14px;
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+/* Style for dropdown options on hover */
+.select-columns select option:hover {
+  background-color: #ddd;
+}
+
+/* Style for selected option */
+.select-columns select option.selected {
+  background-color: #4CAF50;
+  color: #fff;
+}
   .select-columns {
     display: flex;
     align-items: center;
@@ -264,9 +312,29 @@
     background-color: #e0e0e0;
   }
 
+/* Style for the first row of <th> elements (for filters) */
+thead tr:nth-child(1) th {
+  background-color: #f2f2f2; /* Background color */
+  color: #333; /* Text color */
+  font-weight: bold; /* Bold font weight */
+  padding: 10px; /* Padding */
+  text-align: center; /* Left-align text */
+}
+
+/* Style for the filter input fields */
+thead tr:nth-child(1) input[type="text"] {
+  width: 100%; /* Full width */
+  padding: 8px; /* Padding */
+  border: 1px solid #ccc; /* Border */
+  border-radius: 4px; /* Border radius */
+  box-sizing: border-box; /* Box sizing */
+  margin-top: 5px; /* Top margin */
+}
+
 
   .search {
-    display: flex;
+
+    display: none;
     align-items: center;
     margin-bottom: 20px;
   }

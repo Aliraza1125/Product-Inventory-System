@@ -1,21 +1,20 @@
 document.addEventListener("DOMContentLoaded", function() {
-  const sortSelect = document.getElementById("sortName");
   const tableBody = document.querySelector("table.data-table tbody");
   const originalTableHtml = tableBody.innerHTML; 
 
-  sortSelect.addEventListener("change", function() {
-    const sortBy = sortSelect.value;
-    const loggedInUserEmail = localStorage.getItem("loggedInUser");
-    let userProducts = JSON.parse(localStorage.getItem(loggedInUserEmail)) || [];
-    if (sortBy === "byId") {
-      sortById(userProducts);
-    } else if (sortBy === "byPrice") {
-      sortByPrice(userProducts);
-    } else if (sortBy === "byName") {
-      sortByName(userProducts);
-    } else if (sortBy === "default") {
-      resetTable();
-    }
+  // Event listener for column sort icons
+  document.querySelectorAll('.fa-sort').forEach(icon => {
+    icon.addEventListener('click', function () {
+      const column = this.dataset.column;
+      const loggedInUserEmail = localStorage.getItem("loggedInUser");
+      let userProducts = JSON.parse(localStorage.getItem(loggedInUserEmail)) || [];
+      
+      if (column === "id") {
+        sortById(userProducts);
+      } else {
+        sortByColumn(userProducts, column);
+      }
+    });
   });
 
   function sortById(products) {
@@ -25,16 +24,14 @@ document.addEventListener("DOMContentLoaded", function() {
     updateTable(products);
   }
 
-  function sortByPrice(products) {
+  function sortByColumn(products, columnName) {
     products.sort((a, b) => {
-      return parseFloat(a.buyingPrice) - parseFloat(b.buyingPrice);
-    });
-    updateTable(products);
-  }
-  
-  function sortByName(products) {
-    products.sort((a, b) => {
-      return a.productName.localeCompare(b.productName);
+      // Handle sorting for numeric columns
+      if (["buyingPrice", "salePrice", "purchaseQuantity", "shippingRates", "refillLimit"].includes(columnName)) {
+        return parseFloat(a[columnName]) - parseFloat(b[columnName]);
+      }
+      // Default sorting for other columns
+      return a[columnName].localeCompare(b[columnName]);
     });
     updateTable(products);
   }
@@ -45,10 +42,6 @@ document.addEventListener("DOMContentLoaded", function() {
       const row = createTableRow(product);
       tableBody.appendChild(row);
     });
-  }
-
-  function resetTable() {
-    originalTableHtml;
   }
 
   function clearTable() {
