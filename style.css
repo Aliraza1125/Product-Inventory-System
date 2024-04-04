@@ -59,7 +59,7 @@
   
   .data-table {
    
-    border-collapse: separate;
+    border-collapse: collapse;
     background-color: #fff;
   
 
@@ -175,6 +175,7 @@
 
 
   .header2{
+    margin-top: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -313,7 +314,7 @@
   }
 
 /* Style for the first row of <th> elements (for filters) */
-thead tr:nth-child(1) th {
+thead tr:nth-child(2) th {
   background-color: #f2f2f2; /* Background color */
   color: #333; /* Text color */
   font-weight: bold; /* Bold font weight */
@@ -322,7 +323,7 @@ thead tr:nth-child(1) th {
 }
 
 /* Style for the filter input fields */
-thead tr:nth-child(1) input[type="text"] {
+thead tr:nth-child(2) input[type="text"] {
   width: 100%; /* Full width */
   padding: 8px; /* Padding */
   border: 1px solid #ccc; /* Border */
@@ -368,7 +369,6 @@ thead tr:nth-child(1) input[type="text"] {
 
 
   .actionsButtons {
-    margin-top: 30px; /* Adjust the margin as needed */
     display: flex;
     align-items: center;
     justify-content: right;
@@ -390,7 +390,13 @@ thead tr:nth-child(1) input[type="text"] {
     background-color: #e0e0e0;/* Change the background color on hover */
   }
   
-  
+  .tick-icon {
+    margin-left: 5px; /* Adjust as needed */
+    color: green; /* Color of the tick icon */
+    font-weight: bold; /* Adjust as needed */
+  }
+
+ 
   
   
   /* Responsive styles */
@@ -407,4 +413,6 @@ thead tr:nth-child(1) input[type="text"] {
       font-size: 12px;
     }
   }
+  
+
   

@@ -1,7 +1,7 @@
 function deleteProductRow(productId) {
     const confirmed = confirm("Are you sure you want to delete this product?");
     if (!confirmed) {
-        return; // Do nothing if the user cancels
+        return;
     }
 
     const tbody = document.getElementById("table-body");

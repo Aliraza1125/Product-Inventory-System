@@ -6,6 +6,8 @@
     <title>Product Inventory System</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="addProduct.css" />
+    <link rel="stylesheet" href="sideBar.css">
+    <link rel="stylesheet" href="navbar.css">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -15,87 +17,52 @@
     />
   </head>
   <body>
-    <script>
-     
-      if (localStorage.getItem("loggedInUser") === null) {
-        window.location.href = "SignIn.html"; 
-      }
-    </script>
+    
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">Product Inventory System</div>
 
-    <script>
-   
-      function signOut() {
- 
-        localStorage.removeItem("loggedInUser");
+    <ul class="navbar-menu">
+      <li><a href="index.html"><i class="fas fa-home"></i>Home</a></li>
+      <li><a href="#"><i class="fas fa-user"></i>Profile</a></li>
+      <li><a href="#"><i class="fas fa-shopping-cart"></i>Orders</a></li>
+      <li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
+      <li> <button onclick="SignOut.signOut()" class="sign-out-button">Sign out</button></li>
+    </ul>
+  </div>
+</nav>
 
-        window.location.href = "SignIn.html";
-      }
-    </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var selectElement = document.getElementById('selectColumn');
-        var selectedOptions = [];
-      
-        selectElement.addEventListener('change', function() {
-          var selectedOption = selectElement.options[selectElement.selectedIndex];
-          var value = selectedOption.value;
-          
-          if (!selectedOptions.includes(value)) {
-            selectedOptions.push(value);
-          }
-      
-          updateSelectedOptionsColor();
-        });
-      
-        function updateSelectedOptionsColor() {
-          var options = selectElement.options;
-          for (var i = 0; i < options.length; i++) {
-            var value = options[i].value;
-            if (selectedOptions.includes(value)) {
-              options[i].classList.add('selected');
-            } else {
-              options[i].classList.remove('selected');
-            }
-          }
-        }
-      });
-      </script>
 
-    <div class="heading">
-      <div>
+    
+  <div class="content">
 
-      </div>
-      <div>
-        <h1>Data Table</h1>
-      </div>
-      <div>
-        <button onclick="signOut()" class="sign-out-button">Sign out</button>
-      </div>
-    </div>
+
+  
 
     <div class="table-container">
       <div class="header2 fixed">
-
-
         <div class="select-columns">
           <label for="selectColumn">Select Column:</label>
-          <select id="selectColumn" >
-              <option value=select">Select Columns</option>
-              <option value=id">ID</option>
-              <option value="productName">Product Name</option>
-              <option value="productTitle">Product Title</option>
-              <option value="productDescription">Product Description</option>
-              <option value="productVendor">Product Vendor</option>
-              <option value="inStock">In Stock</option>
-              <option value="buyingPrice">Buying Price</option>
-              <option value="salePrice">Sale Price</option>
-              <option value="purchaseQuantity">Purchase Quantity</option>
-              <option value="productType">Product Type</option>
-              <option value="shippingRates">Shipping Rates</option>
-              <option value="refillLimit">Refill Limit</option>
-              <option value="productLocationAddress">Product Location Address</option>
+          <select id="selectColumn">
+            <option value="select">Add Custom Columns</option>
+            <option value="id">ID</option>
+            <option value="productName">Product Name</option>
+            <option value="productTitle">Product Title</option>
+            <option value="productDescription">Product Description</option>
+            <option value="productVendor">Product Vendor</option>
+            <option value="inStock">In Stock</option>
+            <option value="buyingPrice">Buying Price</option>
+            <option value="salePrice">Sale Price</option>
+            <option value="purchaseQuantity">Purchase Quantity</option>
+            <option value="productType">Product Type</option>
+            <option value="shippingRates">Shipping Rates</option>
+            <option value="refillLimit">Refill Limit</option>
+            <option value="productLocationAddress">
+              Product Location Address
+            </option>
           </select>
-      </div>
+        </div>
 
         <div class="search">
           <label for="searchInput">Search Product:</label>
@@ -106,219 +73,288 @@
           />
           <button id="searchButton">Search</button>
         </div>
+        
+    <div class="actionsButtons">
+      <button class="button-add-products" id="addProduct">Add Products</button>
+    </div>
       </div>
 
       <table class="data-table tableSort">
         <thead>
-          <tr id="filterRow">
-            <th class="fixed">Filter:</th>
-            <th id="filterById"><input type="text" placeholder="ID"></th>
-            <th id="filterByProductName"><input type="text" placeholder="Product Name"></th>
-            <th id="filterByProductTitle"><input type="text" placeholder="Product Title"></th>
-            <th id="filterByProductDescription"><input type="text" placeholder="Product Description"></th>
-            <th id="filterByProductVendor"><input type="text" placeholder="Product Vendor"></th>
-            <th id="filterByInStock"><input type="text" placeholder="In Stock"></th>
-            <th id="filterByBuyingPrice"><input type="text" placeholder="Buying Price"></th>
-            <th id="filterBySalePrice"><input type="text" placeholder="Sale Price"></th>
-            <th id="filterByPurchaseQuantity"><input type="text" placeholder="Purchase Quantity"></th>
-            <th id="filterByProductType"><input type="text" placeholder="Product Type"></th>
-            <th id="filterByShippingRates"><input type="text" placeholder="Shipping Rates"></th>
-            <th id="filterByRefillLimit"><input type="text" placeholder="Refill Limit"></th>
-            <th id="filterByProductLocationAddress"><input type="text" placeholder="Product Location Address"></th>
-            <th></th>
-        </tr>
           <tr>
             <th class="fixed">Select Option</th>
-            <th id="sortById">ID <i class="fa-solid fa-sort" data-column="id"></i></th>
-            <th id="sortByProductName">Product Name <i class="fa-solid fa-sort" data-column="productName"></i></th>
-      
-            <th id="sortByProductTitle">Product Title <i class="fa-solid fa-sort" data-column="productTitle"></i></th>
-            <th id="sortByProductDescription">Product Description <i class="fa-solid fa-sort" data-column="productDescription"></i></th>
-            <th id="sortByProductVendor">Product Vendor <i class="fa-solid fa-sort" data-column="productVendor"></i></th>
-            <th id="sortByInStock">In Stock <i class="fa-solid fa-sort" data-column="inStock"></i></th>
-            <th id="sortByBuyingPrice">Buying Price <i class="fa-solid fa-sort" data-column="buyingPrice"></i></th>
-            <th id="sortBySalePrice">Sale Price <i class="fa-solid fa-sort" data-column="salePrice"></i></th>
-            <th id="sortByPurchaseQuantity">Purchase Quantity <i class="fa-solid fa-sort" data-column="purchaseQuantity"></i></th>
-            <th id="sortByProductType">Product Type <i class="fa-solid fa-sort" data-column="productType"></i></th>
-            <th id="sortByShippingRates">Shipping Rates <i class="fa-solid fa-sort" data-column="shippingRates"></i></th>
-            <th id="sortByRefillLimit">Refill Limit <i class="fa-solid fa-sort" data-column="refillLimit"></i></th>
-            <th id="sortByProductLocationAddress">Product Location Address <i class="fa-solid fa-sort" data-column="productLocationAddress"></i></th>
+            <th id="sortById">
+              ID <i class="fa-solid fa-sort" data-column="id"></i>
+            </th>
+            <th id="sortByProductName">
+              Product Name
+              <i class="fa-solid fa-sort" data-column="productName"></i>
+            </th>
+
+            <th id="sortByProductTitle">
+              Product Title
+              <i class="fa-solid fa-sort" data-column="productTitle"></i>
+            </th>
+            <th id="sortByProductDescription">
+              Product Description
+              <i class="fa-solid fa-sort" data-column="productDescription"></i>
+            </th>
+            <th id="sortByProductVendor">
+              Product Vendor
+              <i class="fa-solid fa-sort" data-column="productVendor"></i>
+            </th>
+            <th id="sortByInStock">
+              In Stock <i class="fa-solid fa-sort" data-column="inStock"></i>
+            </th>
+            <th id="sortByBuyingPrice">
+              Buying Price
+              <i class="fa-solid fa-sort" data-column="buyingPrice"></i>
+            </th>
+            <th id="sortBySalePrice">
+              Sale Price
+              <i class="fa-solid fa-sort" data-column="salePrice"></i>
+            </th>
+            <th id="sortByPurchaseQuantity">
+              Purchase Quantity
+              <i class="fa-solid fa-sort" data-column="purchaseQuantity"></i>
+            </th>
+            <th id="sortByProductType">
+              Product Type
+              <i class="fa-solid fa-sort" data-column="productType"></i>
+            </th>
+            <th id="sortByShippingRates">
+              Shipping Rates
+              <i class="fa-solid fa-sort" data-column="shippingRates"></i>
+            </th>
+            <th id="sortByRefillLimit">
+              Refill Limit
+              <i class="fa-solid fa-sort" data-column="refillLimit"></i>
+            </th>
+            <th id="sortByProductLocationAddress">
+              Product Location Address
+              <i
+                class="fa-solid fa-sort"
+                data-column="productLocationAddress"
+              ></i>
+            </th>
             <th style="text-align: center" class="fixed">Actions</th>
           </tr>
-        </thead>
-        <tbody id="table-body">
-        
+          <tr id="filterRow">
+            <th class="fixed">Filter:</th>
+            <th id="filterById"><input type="text" placeholder="ID" /></th>
+            <th id="filterByProductName">
+              <input type="text" placeholder="Product Name" />
+            </th>
+            <th id="filterByProductTitle">
+              <input type="text" placeholder="Product Title" />
+            </th>
+            <th id="filterByProductDescription">
+              <input type="text" placeholder="Product Description" />
+            </th>
+            <th id="filterByProductVendor">
+              <input type="text" placeholder="Product Vendor" />
+            </th>
+            <th id="filterByInStock">
+              <input type="text" placeholder="In Stock" />
+            </th>
+            <th id="filterByBuyingPrice">
+              <input type="text" placeholder="Buying Price" />
+            </th>
+            <th id="filterBySalePrice">
+              <input type="text" placeholder="Sale Price" />
+            </th>
+            <th id="filterByPurchaseQuantity">
+              <input type="text" placeholder="Purchase Quantity" />
+            </th>
+            <th id="filterByProductType">
+              <input type="text" placeholder="Product Type" />
+            </th>
+            <th id="filterByShippingRates">
+              <input type="text" placeholder="Shipping Rates" />
+            </th>
+            <th id="filterByRefillLimit">
+              <input type="text" placeholder="Refill Limit" />
+            </th>
+            <th id="filterByProductLocationAddress">
+              <input type="text" placeholder="Product Location Address" />
+            </th>
+            <th></th>
+          </tr>
           
-        </tbody>
+        </thead>
+        <tbody id="table-body"></tbody>
       </table>
     </div>
 
-    <div class="actionsButtons">
-      <button class="button-add-products" id="addProduct">Add Products</button>
-     
+
+    <!-- Modal for adding a new product -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="product-form">
+          <h1 style="text-align: center; margin-bottom: 5%">Add Product</h1>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="product-name">Product Name:</label>
+              <input type="text" id="product-name" required />
+            </div>
+            <div class="input-container">
+              <label for="product-id">ID:</label>
+              <input type="text" id="product-id" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="">
+              <label for="product-title">Product Title:</label>
+              <input type="text" id="product-title" required />
+            </div>
+            <div class="input-container">
+              <label for="product-description">Product Description:</label>
+              <textarea id="product-description" required></textarea>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="product-vendor">Product Vendor:</label>
+              <input type="text" id="product-vendor" required />
+            </div>
+            <div class="input-container">
+              <label for="in-stock">In Stock:</label>
+              <input type="number" id="in-stock" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="buying-price">Buying Price:</label>
+              <input type="number" id="buying-price" required />
+            </div>
+            <div class="input-container">
+              <label for="sale-price">Sale Price:</label>
+              <input type="number" id="sale-price" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="purchase-quantity">Purchase Quantity:</label>
+              <input type="number" id="purchase-quantity" required />
+            </div>
+            <div class="input-container">
+              <label for="product-type">Product Type:</label>
+              <input type="text" id="product-type" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="shipping-rates">Shipping Rates:</label>
+              <input type="number" id="shipping-rates" required />
+            </div>
+            <div class="input-container">
+              <label for="refill-limit">Refill Limit:</label>
+              <input type="number" id="refill-limit" required />
+            </div>
+          </div>
+          <div class="input-row2">
+            <div class="input-container2">
+              <label for="product-location-address"
+                >Product Location Address:</label
+              >
+              <input type="text" id="product-location-address" required />
+            </div>
+          </div>
+          <button type="submit">Add Product</button>
+        </form>
+      </div>
     </div>
 
-   <!-- Modal for adding a new product -->
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <form id="product-form">
-      <h1 style="text-align: center; margin-bottom: 5%">Add Product</h1>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="product-name">Product Name:</label>
-          <input type="text" id="product-name" required />
-        </div>
-        <div class="input-container">
-          <label for="product-id">ID:</label>
-          <input type="text" id="product-id" required />
-        </div>
+    <!-- Modal for editing a product -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="edit-product-form">
+          <h1 style="text-align: center; margin-bottom: 5%">Edit Product</h1>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="edit-product-name">Product Name:</label>
+              <input type="text" id="edit-product-name" required />
+            </div>
+            <div class="input-container">
+              <label for="edit-product-id">ID:</label>
+              <input type="text" id="edit-product-id" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="edit-product-title">Product Title:</label>
+              <input type="text" id="edit-product-title" required />
+            </div>
+            <div class="input-container">
+              <label for="edit-product-description">Product Description:</label>
+              <textarea id="edit-product-description" required></textarea>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="edit-product-vendor">Product Vendor:</label>
+              <input type="text" id="edit-product-vendor" required />
+            </div>
+            <div class="input-container">
+              <label for="edit-in-stock">In Stock:</label>
+              <input type="number" id="edit-in-stock" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="edit-buying-price">Buying Price:</label>
+              <input type="number" id="edit-buying-price" required />
+            </div>
+            <div class="input-container">
+              <label for="edit-sale-price">Sale Price:</label>
+              <input type="number" id="edit-sale-price" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="edit-purchase-quantity">Purchase Quantity:</label>
+              <input type="number" id="edit-purchase-quantity" required />
+            </div>
+             <div class="input-container">
+              <label for="edit-product-type">Product Type:</label>
+              <input type="text" id="edit-product-type" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="edit-shipping-rates">Shipping Rates:</label>
+              <input type="number" id="edit-shipping-rates" required />
+            </div>
+            <div class="input-container">
+              <label for="edit-refill-limit">Refill Limit:</label>
+              <input type="number" id="edit-refill-limit" required />
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-container">
+              <label for="edit-product-location-address"
+                >Product Location Address:</label
+              >
+              <input type="text" id="edit-product-location-address" required />
+            </div>
+          </div>
+          <button type="submit">Update</button>
+        </form>
       </div>
-      <div class="input-row">
-        <div class="">
-          <label for="product-title">Product Title:</label>
-          <input type="text" id="product-title" required />
-        </div>
-        <div class="input-container">
-          <label for="product-description">Product Description:</label>
-          <textarea id="product-description" required></textarea>
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="product-vendor">Product Vendor:</label>
-          <input type="text" id="product-vendor" required />
-        </div>
-        <div class="input-container">
-          <label for="in-stock">In Stock:</label>
-          <input type="number" id="in-stock" required />
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="buying-price">Buying Price:</label>
-          <input type="number" id="buying-price" required />
-        </div>
-        <div class="input-container">
-          <label for="sale-price">Sale Price:</label>
-          <input type="number" id="sale-price" required />
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="purchase-quantity">Purchase Quantity:</label>
-          <input type="number" id="purchase-quantity" required />
-        </div>
-        <div class="input-container">
-          <label for="product-type">Product Type:</label>
-          <input type="text" id="product-type" required />
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="shipping-rates">Shipping Rates:</label>
-          <input type="number" id="shipping-rates" required />
-        </div>
-        <div class="input-container">
-          <label for="refill-limit">Refill Limit:</label>
-          <input type="number" id="refill-limit" required />
-        </div>
-      </div>
-      <div class="input-row2">
-        <div class="input-container2">
-          <label for="product-location-address">Product Location Address:</label>
-          <input type="text" id="product-location-address" required />
-        </div>
-      </div>
-      <button type="submit">Add Product</button>
-    </form>
+    </div>
+
   </div>
-</div>
 
-
-  <!-- Modal for editing a product -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <form id="edit-product-form">
-      <h1 style="text-align: center; margin-bottom: 5%">Edit Product</h1>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="edit-product-name">Product Name:</label>
-          <input type="text" id="edit-product-name" required />
-        </div>
-        <div class="input-container">
-          <label for="edit-product-id">ID:</label>
-          <input type="text" id="edit-product-id" required />
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="edit-product-title">Product Title:</label>
-          <input type="text" id="edit-product-title" required />
-        </div>
-        <div class="input-container">
-          <label for="edit-product-description">Product Description:</label>
-          <textarea id="edit-product-description" required></textarea>
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="edit-product-vendor">Product Vendor:</label>
-          <input type="text" id="edit-product-vendor" required />
-        </div>
-        <div class="input-container">
-          <label for="edit-in-stock">In Stock:</label>
-          <input type="number" id="edit-in-stock" required />
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="edit-buying-price">Buying Price:</label>
-          <input type="number" id="edit-buying-price" required />
-        </div>
-        <div class="input-container">
-          <label for="edit-sale-price">Sale Price:</label>
-          <input type="number" id="edit-sale-price" required />
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="edit-purchase-quantity">Purchase Quantity:</label>
-          <input type="number" id="edit-purchase-quantity" required />
-        </div>
-        <div class="input-container">
-          <label for="edit-product-type">Product Type:</label>
-          <input type="text" id="edit-product-type" required />
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="edit-shipping-rates">Shipping Rates:</label>
-          <input type="number" id="edit-shipping-rates" required />
-        </div>
-        <div class="input-container">
-          <label for="edit-refill-limit">Refill Limit:</label>
-          <input type="number" id="edit-refill-limit" required />
-        </div>
-      </div>
-      <div class="input-row">
-        <div class="input-container">
-          <label for="edit-product-location-address">Product Location Address:</label>
-          <input type="text" id="edit-product-location-address" required />
-        </div>
-      </div>
-      <button type="submit">Update</button>
-    </form>
-  </div>
-</div>
-
-
+<script src="script.js"></script>
     <script src="./tableSort.js"></script>
     <script src="./addColumns.js"></script>
     <script src="./searchProduct.js"></script>
     <script src="./addProduct.js"></script>
     <script src="./editProduct.js"></script>
     <script src="./deleteProduct.js"></script>
+    <script src="sidebar.js"></script>
+
   </body>
 </html>

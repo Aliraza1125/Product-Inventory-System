@@ -1,54 +1,55 @@
-document.addEventListener("DOMContentLoaded", function() {
-  const tableBody = document.querySelector("table.data-table tbody");
-  const originalTableHtml = tableBody.innerHTML; 
+class TableSorter {
+  constructor(tableBodySelector) {
+    this.tableBody = document.querySelector(tableBodySelector);
+    this.originalTableHtml = this.tableBody.innerHTML;
 
-  // Event listener for column sort icons
-  document.querySelectorAll('.fa-sort').forEach(icon => {
-    icon.addEventListener('click', function () {
-      const column = this.dataset.column;
-      const loggedInUserEmail = localStorage.getItem("loggedInUser");
-      let userProducts = JSON.parse(localStorage.getItem(loggedInUserEmail)) || [];
-      
-      if (column === "id") {
-        sortById(userProducts);
-      } else {
-        sortByColumn(userProducts, column);
-      }
+    document.querySelectorAll('.fa-sort').forEach(icon => {
+      icon.addEventListener('click', () => {
+        const column = icon.dataset.column;
+        this.sortTable(column);
+      });
     });
-  });
-
-  function sortById(products) {
-    products.sort((a, b) => {
-      return parseInt(a.id) - parseInt(b.id);
-    });
-    updateTable(products);
   }
 
-  function sortByColumn(products, columnName) {
+  sortTable(column) {
+    const loggedInUserEmail = localStorage.getItem("loggedInUser");
+    let userProducts = JSON.parse(localStorage.getItem(loggedInUserEmail)) || [];
+
+    if (column === "id") {
+      this.sortById(userProducts);
+    } else {
+      this.sortByColumn(userProducts, column);
+    }
+  }
+
+  sortById(products) {
+    products.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    this.updateTable(products);
+  }
+
+  sortByColumn(products, columnName) {
     products.sort((a, b) => {
-      // Handle sorting for numeric columns
       if (["buyingPrice", "salePrice", "purchaseQuantity", "shippingRates", "refillLimit"].includes(columnName)) {
         return parseFloat(a[columnName]) - parseFloat(b[columnName]);
       }
-      // Default sorting for other columns
       return a[columnName].localeCompare(b[columnName]);
     });
-    updateTable(products);
+    this.updateTable(products);
   }
 
-  function updateTable(products) {
-    clearTable();
+  updateTable(products) {
+    this.clearTable();
     products.forEach(product => {
-      const row = createTableRow(product);
-      tableBody.appendChild(row);
+      const row = this.createTableRow(product);
+      this.tableBody.appendChild(row);
     });
   }
 
-  function clearTable() {
-    tableBody.innerHTML = "";
+  clearTable() {
+    this.tableBody.innerHTML = "";
   }
 
-  function createTableRow(product) {
+  createTableRow(product) {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td class="fixed"><input type="checkbox"></td>
@@ -72,8 +73,9 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     return row;
   }
+}
 
-  const loggedInUserEmail = localStorage.getItem("loggedInUser");
-  let userProducts = JSON.parse(localStorage.getItem(loggedInUserEmail)) || [];
-  sortById(userProducts);
+// Usage
+document.addEventListener("DOMContentLoaded", () => {
+  const tableSorter = new TableSorter("table.data-table tbody");
 });
