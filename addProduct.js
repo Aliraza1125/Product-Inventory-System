@@ -1,14 +1,16 @@
+const API_URL_add = 'http://localhost:3001/api/add/products';
+const show = 'http://localhost:3001/api/show/products';
+
 class ProductManager {
   constructor() {
     this.tableBody = document.getElementById("table-body");
-    this.loggedInUserEmail = localStorage.getItem("loggedInUser");
     this.modal = document.getElementById("myModal");
     this.productForm = document.getElementById("product-form");
 
     document.getElementById("addProduct").addEventListener("click", () => this.displayModal());
     document.getElementsByClassName("close")[0].addEventListener("click", () => this.closeModal());
     this.productForm.addEventListener("submit", event => this.handleFormSubmission(event));
-    window.addEventListener("load", () => this.populateTableFromStorage());
+    window.addEventListener("load", () => this.populateTableFromDatabase());
   }
 
   displayModal() {
@@ -19,38 +21,39 @@ class ProductManager {
     this.modal.style.display = "none";
   }
 
-  addProductToTable(productDetails) {
-    if (!this.loggedInUserEmail) {
-      alert("Please log in to add products.");
-      return;
+  async addProductToDatabase(productDetails) {
+    try {
+      const response = await fetch(API_URL_add, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productDetails),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add product');
+      }
+
+      alert('Product added successfully!');
+    } catch (error) {
+      console.error('Error adding product:', error.message);
+      alert('Failed to add product. Please try again.');
     }
-
-    let userProducts = JSON.parse(localStorage.getItem(this.loggedInUserEmail)) || [];
-
-    const existingProductIndex = userProducts.findIndex(p => p.id === productDetails.id);
-
-    if (existingProductIndex !== -1) {
-      userProducts[existingProductIndex] = productDetails;
-    } else {
-      userProducts.push(productDetails);
-    }
-
-    localStorage.setItem(this.loggedInUserEmail, JSON.stringify(userProducts));
-
-    this.updateTable(userProducts);
-
-    // Alert message when product is added
-    alert("Product added successfully!");
   }
 
-  populateTableFromStorage() {
-    if (!this.loggedInUserEmail) {
-      alert("Please log in to view products.");
-      return;
+  async populateTableFromDatabase() {
+    try {
+      const response = await fetch(show);
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      const products = await response.json();
+      this.updateTable(products);
+    } catch (error) {
+      console.error('Error fetching products:', error.message);
+      alert('Failed to fetch products. Please try again.');
     }
-
-    const userProducts = JSON.parse(localStorage.getItem(this.loggedInUserEmail)) || [];
-    this.updateTable(userProducts);
   }
 
   updateTable(products) {
@@ -69,7 +72,7 @@ class ProductManager {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td class="fixed"><input type="checkbox"></td>
-      <td>${product.id}</td>
+      <td>${product._id}</td>
       <td>${product.productName}</td>
       <td>${product.productTitle}</td>
       <td>${product.productDescription}</td>
@@ -90,32 +93,31 @@ class ProductManager {
     return row;
   }
 
-  handleFormSubmission(event) {
+  async handleFormSubmission(event) {
     event.preventDefault();
 
     const productDetails = {
-      id: document.getElementById("product-id").value,
       productName: document.getElementById("product-name").value,
       productTitle: document.getElementById("product-title").value,
       productDescription: document.getElementById("product-description").value,
       productVendor: document.getElementById("product-vendor").value,
-      inStock: document.getElementById("in-stock").value,
-      buyingPrice: document.getElementById("buying-price").value,
-      salePrice: document.getElementById("sale-price").value,
-      purchaseQuantity: document.getElementById("purchase-quantity").value,
+      inStock: parseInt(document.getElementById("in-stock").value),
+      buyingPrice: parseFloat(document.getElementById("buying-price").value),
+      salePrice: parseFloat(document.getElementById("sale-price").value),
+      purchaseQuantity: parseInt(document.getElementById("purchase-quantity").value),
       productType: document.getElementById("product-type").value,
       shippingRates: document.getElementById("shipping-rates").value,
-      refillLimit: document.getElementById("refill-limit").value,
+      refillLimit: parseInt(document.getElementById("refill-limit").value),
       productLocationAddress: document.getElementById("product-location-address").value,
     };
 
-    this.addProductToTable(productDetails);
+    await this.addProductToDatabase(productDetails);
     this.productForm.reset();
     this.closeModal();
+    await this.populateTableFromDatabase();
   }
 }
 
-// Usage
 document.addEventListener("DOMContentLoaded", () => {
   const productManager = new ProductManager();
 });

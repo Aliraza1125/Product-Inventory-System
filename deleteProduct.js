@@ -1,41 +1,41 @@
-function deleteProductRow(productId) {
+async function deleteProductRow(productId) {
     const confirmed = confirm("Are you sure you want to delete this product?");
     if (!confirmed) {
         return;
     }
 
-    const tbody = document.getElementById("table-body");
-    const rows = tbody.querySelectorAll("tr");
+    try {
+        const response = await fetch(`http://localhost:3001/api/delete/products/${productId}`, {
+            method: 'DELETE'
+        });
 
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        const idCell = row.querySelector("td:nth-child(2)");
-        if (idCell.textContent.trim() === productId) {
-            row.remove();
+        if (!response.ok) {
+            throw new Error('Failed to delete product');
+        }
 
-            const loggedInUserEmail = localStorage.getItem("loggedInUser");
-            const userProducts = JSON.parse(localStorage.getItem(loggedInUserEmail)) || [];
+        const tbody = document.getElementById("table-body");
+        const rows = tbody.querySelectorAll("tr");
 
-            const productIndex = userProducts.findIndex(p => p.id === productId);
-
-            if (productIndex !== -1) {
-                userProducts.splice(productIndex, 1);
-                localStorage.setItem(loggedInUserEmail, JSON.stringify(userProducts));
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const idCell = row.querySelector("td:nth-child(2)");
+            if (idCell.textContent.trim() === productId) {
+                row.remove();
                 alert("Product deleted successfully.");
-                return;
-            } else {
-                console.error(`Product with ID ${productId} not found in local storage.`);
                 return;
             }
         }
-    }
 
-    console.error(`Product with ID ${productId} not found in the table.`);
+        console.error(`Product with ID ${productId} not found in the table.`);
+    } catch (error) {
+        console.error('Error deleting product:', error.message);
+        alert('Failed to delete product. Please try again.');
+    }
 }
 
-document.getElementById("table-body").addEventListener("click", function(event) {
+document.getElementById("table-body").addEventListener("click", async function(event) {
     if (event.target.classList.contains("button-delete-product")) {
         const productId = event.target.closest("tr").querySelector("td:nth-child(2)").textContent;
-        deleteProductRow(productId);
+        await deleteProductRow(productId);
     }
 });

@@ -1,27 +1,37 @@
 class LoginManager {
-    constructor() {
-      document.getElementById("loginForm").addEventListener("submit", event => this.handleLogin(event));
-    }
-  
-    handleLogin(event) {
-      event.preventDefault();
-      const { value: email } = document.getElementById("email-address");
-      const { value: password } = document.getElementById("password");
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-  
-      const foundUser = users.find(user => user.email === email);
-      if (!foundUser) return alert("User not found");
-  
-      if (CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64) === foundUser.password) {
+  constructor() {
+    document.getElementById("loginForm").addEventListener("submit", event => this.handleLogin(event));
+  }
+
+  async handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById("email-address").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const response = await fetch('http://localhost:3001/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
         alert("Login successful!");
-        localStorage.setItem("loggedInUser", email);
+        // You can handle the user data as needed here, such as storing it in session storage or managing it dynamically in the application state.
         window.location.href = "index.html";
       } else {
-        alert("Invalid email or password");
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Login failed');
       }
+    } catch (error) {
+      console.error('Login error:', error.message);
+      alert('Login failed. Please check your email and password.');
     }
   }
-  
-  // Usage
-  document.addEventListener("DOMContentLoaded", () => new LoginManager());
-  
+}
+
+// Usage
+document.addEventListener("DOMContentLoaded", () => new LoginManager());

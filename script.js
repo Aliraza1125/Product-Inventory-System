@@ -1,18 +1,13 @@
 class Authentication {
     constructor() {
-      if (localStorage.getItem("loggedInUser") === null) {
-        this.redirectToSignIn();
-      }
+   
     }
   
-    redirectToSignIn() {
-      window.location.href = "SignIn.html";
-    }
   }
   
   class SignOut {
     static signOut() {
-      localStorage.removeItem("loggedInUser");
+  
       window.location.href = "SignIn.html";
     }
   }

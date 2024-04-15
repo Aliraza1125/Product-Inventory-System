@@ -9,82 +9,83 @@ class ProductEditor {
     this.registerCloseEvents();
   }
 
-  openEditModal(productId) {
-    const productRow = this.findProductRow(productId);
-    if (!productRow) {
+  async openEditModal(productId) {
+    const product = await this.findProductRow(productId);
+    if (!product) {
       console.error(`Product with ID ${productId} not found.`);
       return;
     }
-    this.fillEditForm(productRow);
+    this.fillEditForm(product);
     this.editModal.style.display = "block";
   }
 
-  findProductRow(productId) {
-    const tableRows = this.tableBody.querySelectorAll("tr");
-    return [...tableRows].find(row => row.cells[1].textContent === productId);
+  async findProductRow(productId) {
+    try {
+      const response = await fetch(`http://localhost:3001/api/show/products/${productId}`);
+      if (!response.ok) {
+        throw new Error('Product not found');
+      }
+      const product = await response.json();
+      return product;
+    } catch (error) {
+      console.error(`Error finding product with ID ${productId}:`, error.message);
+      return null;
+    }
   }
 
-  fillEditForm(productRow) {
+  fillEditForm(product) {
     const editForm = this.editProductForm;
     const elements = editForm.elements;
-    elements["edit-product-id"].value = productRow.cells[1].textContent;
-    elements["edit-product-name"].value = productRow.cells[2].textContent;
-    elements["edit-product-title"].value = productRow.cells[3].textContent;
-    elements["edit-product-description"].value = productRow.cells[4].textContent;
-    elements["edit-product-vendor"].value = productRow.cells[5].textContent;
-    elements["edit-in-stock"].value = productRow.cells[6].textContent;
-    elements["edit-buying-price"].value = productRow.cells[7].textContent;
-    elements["edit-sale-price"].value = productRow.cells[8].textContent;
-    elements["edit-purchase-quantity"].value = productRow.cells[9].textContent;
-    elements["edit-product-type"].value = productRow.cells[10].textContent;
-    elements["edit-shipping-rates"].value = productRow.cells[11].textContent;
-    elements["edit-refill-limit"].value = productRow.cells[12].textContent;
-    elements["edit-product-location-address"].value = productRow.cells[13].textContent;
+    elements["edit-product-id"].value = product._id;
+    elements["edit-product-name"].value = product.productName;
+    elements["edit-product-title"].value = product.productTitle;
+    elements["edit-product-description"].value = product.productDescription;
+    elements["edit-product-vendor"].value = product.productVendor;
+    elements["edit-in-stock"].value = product.inStock;
+    elements["edit-buying-price"].value = product.buyingPrice;
+    elements["edit-sale-price"].value = product.salePrice;
+    elements["edit-purchase-quantity"].value = product.purchaseQuantity;
+    elements["edit-product-type"].value = product.productType;
+    elements["edit-shipping-rates"].value = product.shippingRates;
+    elements["edit-refill-limit"].value = product.refillLimit;
+    elements["edit-product-location-address"].value = product.productLocationAddress;
   }
 
-  updateProductInLocalStorage(updatedProduct) {
-    const loggedInUserEmail = localStorage.getItem("loggedInUser");
-    let userProducts = JSON.parse(localStorage.getItem(loggedInUserEmail)) || [];
-    const productIndex = userProducts.findIndex(product => product.id === updatedProduct.id);
-    if (productIndex !== -1) {
-      userProducts[productIndex] = updatedProduct;
-      localStorage.setItem(loggedInUserEmail, JSON.stringify(userProducts));
+  async updateProductInDatabase(updatedProduct) {
+    try {
+      const response = await fetch(`http://localhost:3001/api/edit/products/${updatedProduct.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedProduct),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update product');
+      }
+
+      alert("Product updated successfully!");
+      // Update table after successful update
+      await this.populateTableFromDatabase();
+    } catch (error) {
+      console.error('Error updating product:', error.message);
+      alert('Failed to update product. Please try again.');
     }
   }
 
-  updateTableRow(updatedProduct) {
-    const productRow = this.findProductRow(updatedProduct.id);
-    if (productRow) {
-      const cells = productRow.cells;
-      cells[2].textContent = updatedProduct.productName;
-      cells[3].textContent = updatedProduct.productTitle;
-      cells[4].textContent = updatedProduct.productDescription;
-      cells[5].textContent = updatedProduct.productVendor;
-      cells[6].textContent = updatedProduct.inStock;
-      cells[7].textContent = updatedProduct.buyingPrice;
-      cells[8].textContent = updatedProduct.salePrice;
-      cells[9].textContent = updatedProduct.purchaseQuantity;
-      cells[10].textContent = updatedProduct.productType;
-      cells[11].textContent = updatedProduct.shippingRates;
-      cells[12].textContent = updatedProduct.refillLimit;
-      cells[13].textContent = updatedProduct.productLocationAddress;
-    }
-  }
-
-  handleEditButtonClick(event) {
+  async handleEditButtonClick(event) {
     if (event.target.classList.contains("button-edit-product")) {
       const productId = event.target.closest("tr").cells[1].textContent;
-      this.openEditModal(productId);
+      await this.openEditModal(productId);
     }
   }
 
-  handleFormSubmission(event) {
+  async handleFormSubmission(event) {
     event.preventDefault();
     const updatedProduct = this.collectFormData();
-    this.updateProductInLocalStorage(updatedProduct);
-    this.updateTableRow(updatedProduct);
+    await this.updateProductInDatabase(updatedProduct);
     this.editModal.style.display = "none";
-    alert("Product updated successfully!");
   }
 
   collectFormData() {
@@ -104,6 +105,57 @@ class ProductEditor {
       refillLimit: form["edit-refill-limit"].value,
       productLocationAddress: form["edit-product-location-address"].value
     };
+  }
+
+  async populateTableFromDatabase() {
+    try {
+      const response = await fetch('http://localhost:3001/api/show/products');
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      const products = await response.json();
+      this.updateTable(products);
+    } catch (error) {
+      console.error('Error fetching products:', error.message);
+      alert('Failed to fetch products. Please try again.');
+    }
+  }
+
+  updateTable(products) {
+    this.clearTable();
+    products.forEach(product => {
+      const row = this.createTableRow(product);
+      this.tableBody.appendChild(row);
+    });
+  }
+
+  clearTable() {
+    this.tableBody.innerHTML = "";
+  }
+
+  createTableRow(product) {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td class="fixed"><input type="checkbox"></td>
+      <td>${product._id}</td>
+      <td>${product.productName}</td>
+      <td>${product.productTitle}</td>
+      <td>${product.productDescription}</td>
+      <td>${product.productVendor}</td>
+      <td>${product.inStock}</td>
+      <td>${product.buyingPrice}</td>
+      <td>${product.salePrice}</td>
+      <td>${product.purchaseQuantity}</td>
+      <td>${product.productType}</td>
+      <td>${product.shippingRates}</td>
+      <td>${product.refillLimit}</td>
+      <td>${product.productLocationAddress}</td>
+      <td style="display: flex" >
+        <button class="button-edit-product"><i class="fas fa-edit"></i> Edit</button>
+        <button class="button-delete-product"><i class="fas fa-trash-alt"></i> Delete</button>
+      </td>
+    `;
+    return row;
   }
 
   registerCloseEvents() {
